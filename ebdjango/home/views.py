@@ -12,3 +12,12 @@ def gethtml():
 	f =  open("home/index.html", "r")
 	r = f.read()
 	return r
+
+def privacypolicy(request):
+	html = privacyhtml()
+	return HttpResponse(html)
+
+def privacyhtml():
+	f = open("home/privacypolicy.html", "r")
+	r = f.read()
+	return r
