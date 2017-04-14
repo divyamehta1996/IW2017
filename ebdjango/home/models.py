@@ -10,8 +10,11 @@ class Users(models.Model):
 	city = models.CharField(max_length=75)
 	facebook_id = models.IntegerField(default=0)
 
+	def __str__(self):
+		return self.name + ', ' + self.gender + ', ' + self.birthday + ', ' + self.city + ', '
 
 class Facebook(models.Model):
+	user = models.ForeignKey(Users, on_delete=models.CASCADE)
 	sports = models.CharField(max_length=100)
 	music = models.CharField(max_length=100)
 	books = models.CharField(max_length=100)
