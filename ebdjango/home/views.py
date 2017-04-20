@@ -27,7 +27,17 @@ def fblogin(request):
 	r = f.read()
 	return HttpResponse(r)
 
-def search(request):
+def results(request):
 	f = open("home/results.html", "r")
+	r = f.read()
+	return HttpResponse(r)
+
+def search(request):
+	f = open("home/search.html", "r")
+	r = f.read()
+	return HttpResponse(r)
+
+def specifics(request):
+	f = open("home/price.html", "r")
 	r = f.read()
 	return HttpResponse(r)
