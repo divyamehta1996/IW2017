@@ -6,9 +6,9 @@ from django.db import models
 class Users(models.Model):
 	name = models.CharField(max_length=75)
 	gender = models.CharField(max_length=10)
-	birthday = models.CharField(max_length=20)
+	#birthday = models.CharField(max_length=20)
 	city = models.CharField(max_length=75)
-	facebook_id = models.IntegerField(default=0)
+	#facebook_id = models.IntegerField(default=0)
 
 	def __str__(self):
 		return self.name + ', ' + self.gender + ', ' + self.birthday + ', ' + self.city + ', '

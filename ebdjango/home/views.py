@@ -16,7 +16,6 @@ def index(request):
 
    # return HttpResponse('My first view.')
 def login_notfb(request):
-	print "hello"
 	username = request.POST.get('username')
 	password=username = request.POST.get('password1')
 	user = authenticate(request, username=username, password=password)
@@ -68,21 +67,45 @@ def specifics(request):
 	return HttpResponse(r)
 
 def signup(request):
+	# form = Signup(request.POST)
+	# form1 = UserForm(request.POST)
+	# if form.is_valid() and form1.is_valid():
+	# 	print "hi"
+	# 	new = form.save()
+	# 	new1 = form1.save()
+	# 	username = request.POST['username']
+	# 	print username
+	# 	password = request.POST['password']
+	# 	print password
+	# 	user = User.objects.create_user(username, password)
+	# 	user.save()
+	# 	login(request, user)
+	# 		# redirect to a new URL:
+	# 	return HttpResponseRedirect('http://localhost:8000/search')
+	# return render(request, 'signup.html', {'form': form, 'form1': form1})
+
+
+
 	if request.method == 'POST':
-		# create a form instance and populate it with data from the request:
-		form = Signup(request.POST)
-		form1 = UserForm(request.POST)
-	# check whether it's valid:
-		if form.is_valid() and form1.is_valid():
-		# process the data in form.cleaned_data as required
-			new = form.save()
-			new1 = form1.save()
-			user = authenticate(username=request.POST['username'], password=request.POST['password1'])
+	 	form = Signup(request.POST)
+	 	form1 = UserForm(request.POST)
+	 # check whether it's valid:
+	 	if form.is_valid() and form1.is_valid():
+	 	# process the data in form.cleaned_data as required
+	 		new = form.save()
+	 		new1 = form1.save()
+	 		user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
+			user.save()
 			login(request, user)
-			# redirect to a new URL:
 			return HttpResponseRedirect('http://localhost:8000/search')
-	else: 
-		form = Signup(request.GET)
-		form1 = UserForm(request.GET)
-	return render(request, 'signup.html', {'form': form, 'form1': form1})
+	else:
+		return render(request, 'signup.html')
+	# 		user = authenticate(username=request.POST['username'], password=request.POST['password1'])
+	# 		login(request, user)
+	# 		# redirect to a new URL:
+	# 		return HttpResponseRedirect('http://localhost:8000/search')
+	# else: 
+	# 	form = Signup(request.GET)
+	# 	form1 = UserForm(request.GET)
+	# return render(request, 'signup.html', {'form': form, 'form1': form1})
 
