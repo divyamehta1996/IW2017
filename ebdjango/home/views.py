@@ -1,12 +1,24 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect
+from home.models import Facebook, Users
+from .forms import Signup
+from .forms import UserForm
+from django.contrib.auth.models import User
 
 def index(request):
 	html = gethtml()
 	return HttpResponse(html)
 
    # return HttpResponse('My first view.')
+def login_notfb(request):
+	if request.method == 'POST':
+		user = authenticate(username=request.POST['username'], password=request.POST['password1'])
+		login(request, user)
+		return HttpResponseRedirect('http://localhost:8000/search')
+	else:
+		return render(request, 'login_notfb.html')
 
 def gethtml():
 	f =  open("home/index2.html", "r")
@@ -28,9 +40,13 @@ def fblogin(request):
 	return HttpResponse(r)
 
 def results(request):
-	f = open("home/results.html", "r")
-	r = f.read()
-	return HttpResponse(r)
+	a_list = Facebook.objects.all()
+	context = {'results_list': a_list}
+	return render(request, 'results.html', context)
+
+	# f = open("home/results.html", "r")
+	# r = f.read()
+	# return HttpResponse(r)
 
 def search(request):
 	f = open("home/search.html", "r")
@@ -41,3 +57,23 @@ def specifics(request):
 	f = open("home/price.html", "r")
 	r = f.read()
 	return HttpResponse(r)
+
+def signup(request):
+	if request.method == 'POST':
+		# create a form instance and populate it with data from the request:
+		form = Signup(request.POST)
+		form1 = UserForm(request.POST)
+	# check whether it's valid:
+		if form.is_valid() and form1.is_valid():
+		# process the data in form.cleaned_data as required
+			new = form.save()
+			new1 = form1.save()
+			user = authenticate(username=request.POST['username'], password=request.POST['password1'])
+			login(request, user)
+			# redirect to a new URL:
+			return HttpResponseRedirect('http://localhost:8000/search')
+	else: 
+		form = Signup(request.GET)
+		form1 = UserForm(request.GET)
+	return render(request, 'signup.html', {'form': form, 'form1': form1})
+
