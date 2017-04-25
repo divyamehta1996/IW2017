@@ -1,11 +1,14 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from home.models import Facebook, Users
 from .forms import Signup
 from .forms import UserForm
 from django.contrib.auth.models import User
+#from django.contrib.auth.decorators import login_required
 
 def index(request):
 	html = gethtml()
@@ -13,12 +16,18 @@ def index(request):
 
    # return HttpResponse('My first view.')
 def login_notfb(request):
-	if request.method == 'POST':
-		user = authenticate(username=request.POST['username'], password=request.POST['password1'])
+	print "hello"
+	username = request.POST.get('username')
+	password=username = request.POST.get('password1')
+	user = authenticate(request, username=username, password=password)
+	if user is not None:
+		print "Success!"
 		login(request, user)
 		return HttpResponseRedirect('http://localhost:8000/search')
 	else:
+		print "error"
 		return render(request, 'login_notfb.html')
+
 
 def gethtml():
 	f =  open("home/index2.html", "r")
