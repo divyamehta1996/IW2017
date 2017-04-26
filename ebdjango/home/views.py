@@ -4,34 +4,51 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from home.models import Facebook, Users
+from home.models import Users
 from .forms import Signup
 from .forms import UserForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.forms.extras.widgets import SelectDateWidget
+
 #from django.contrib.auth.decorators import login_required
 
 def index(request):
-	html = gethtml()
-	return HttpResponse(html)
+	f =  open("home/index2.html", "r")
+	r = f.read()
+	return HttpResponse(r)
 
    # return HttpResponse('My first view.')
 def login_notfb(request):
-	username = request.POST.get('username')
-	password=username = request.POST.get('password1')
-	user = authenticate(request, username=username, password=password)
-	if user is not None:
-		print "Success!"
-		login(request, user)
-		return HttpResponseRedirect('http://localhost:8000/search')
+	if request.method == 'POST':
+		user = authenticate(username=request.POST['username'], password=request.POST['password'])
+		print "post request"
+
+		if request.user.is_authenticated():
+			login(request, user)
+			print "success!"
+			return render(request, 'search.html')
+		else:
+			print"error"
+			return render(request, 'login_notfb.html')
 	else:
-		print "error"
+		print "that didnt work"
 		return render(request, 'login_notfb.html')
 
 
-def gethtml():
-	f =  open("home/index2.html", "r")
-	r = f.read()
-	return r
+	# username = request.POST.get('username')
+	# password=username = request.POST.get('password1')
+	# user = authenticate(request, username=username, password=password)
+	# if user is not None:
+	# 	print "Success!"
+	# 	login(request, user)
+	# 	return HttpResponseRedirect('http://localhost:8000/search')
+	# else:
+	# 	print "error"
+	# 	return render(request, 'login_notfb.html')
+def logout(request):
+	logout(request)
+	return render('index2.html')
 
 def privacypolicy(request):
 	html = privacyhtml()
@@ -48,7 +65,7 @@ def fblogin(request):
 	return HttpResponse(r)
 
 def results(request):
-	a_list = Facebook.objects.all()
+	a_list = Users.objects.all()
 	context = {'results_list': a_list}
 	return render(request, 'results.html', context)
 
@@ -57,9 +74,17 @@ def results(request):
 	# return HttpResponse(r)
 
 def search(request):
-	f = open("home/search.html", "r")
-	r = f.read()
-	return HttpResponse(r)
+	if request.method == 'GET': # If the form is submitted
+		search_query = request.GET.get('search_box', None)
+		a_list = Users.objects.filter(name=search_query)
+		for a in a_list:
+			print a
+		context = {'results_list': a_list}
+		print "success"
+		return render(request, 'search.html', context)
+	else:
+		print "failure"
+		render(request, 'search.html')
 
 def specifics(request):
 	f = open("home/price.html", "r")
@@ -67,6 +92,33 @@ def specifics(request):
 	return HttpResponse(r)
 
 def signup(request):
+	if request.method == 'POST':
+	# create a form instance and populate it with data from the request:
+		
+		form = Signup(request.POST)
+		form_user = UserForm(request.POST)
+		# check whether it's valid:
+		if form.is_valid() and form_user.is_valid():
+			# process the data in form.cleaned_data as required
+			new_user = form_user.save()
+			new_info = form.save(commit=False)
+			new_info.user = new_user
+			new_info.save()
+			print "saved"
+			user = authenticate(username=request.POST['username'], password=request.POST['password1'])
+			if user.is_authenticated():
+				print "succes"
+				login(request, user)
+			else:
+				print "errorrrr"
+			# redirect to a new URL:
+			return HttpResponseRedirect('http://localhost:8000/search/')
+		# if a GET (or any other method) we'll create a blank form
+	else: 
+		form = Signup()
+		form_user = UserForm()
+	return render(request, 'signup.html', {'form': form, 'form_user': form_user})
+
 	# form = Signup(request.POST)
 	# form1 = UserForm(request.POST)
 	# if form.is_valid() and form1.is_valid():
@@ -84,22 +136,6 @@ def signup(request):
 	# 	return HttpResponseRedirect('http://localhost:8000/search')
 	# return render(request, 'signup.html', {'form': form, 'form1': form1})
 
-
-
-	if request.method == 'POST':
-	 	form = Signup(request.POST)
-	 	form1 = UserForm(request.POST)
-	 # check whether it's valid:
-	 	if form.is_valid() and form1.is_valid():
-	 	# process the data in form.cleaned_data as required
-	 		new = form.save()
-	 		new1 = form1.save()
-	 		user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
-			user.save()
-			login(request, user)
-			return HttpResponseRedirect('http://localhost:8000/search')
-	else:
-		return render(request, 'signup.html')
 	# 		user = authenticate(username=request.POST['username'], password=request.POST['password1'])
 	# 		login(request, user)
 	# 		# redirect to a new URL:

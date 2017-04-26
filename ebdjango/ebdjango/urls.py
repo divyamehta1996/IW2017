@@ -17,12 +17,16 @@ from django.conf.urls import include, url
 from django.contrib import admin
 # Add this import
 from django.contrib.auth import views
-from home.forms import LoginForm
+#from home.forms import LoginForm
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^logout/', include('django.contrib.auth.urls')),
     url(r'^', include('home.urls')),
-    url(r'^login/$', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm}, name="login"),
-    url(r'^logout/$', views.logout, {'next_page': '/login'}),  
+    url(r'^signup/', include('home.urls')),
+    url(r'^login/', include('home.urls')),
+
+    #url(r'^login/$', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm}, name="login"),
+    #url(r'^logout/$', views.logout, {'next_page': '/login'}),  
  
 ]
