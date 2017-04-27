@@ -20,3 +20,7 @@ class Users(models.Model):
 	
 	def __str__(self):
 		return self.name + ',' + self.birthday + ', ' + self.city
+
+class UserWishlist(models.Model):
+	#user = models.OneToOneField(User)
+	item = models.CharField(max_length=100, default="")

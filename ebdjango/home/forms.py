@@ -1,6 +1,6 @@
 from django import forms
 import datetime
-from home.models import Users
+from home.models import Users, UserWishlist
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import TabHolder, Tab
 from django.forms.extras.widgets import SelectDateWidget
@@ -32,6 +32,17 @@ class UserForm(UserCreationForm):
 	class Meta:
 		model = User
 		fields = ('username', 'email')
+
+class Wishlist(forms.ModelForm):
+	item = forms.CharField()
+
+	class Meta:
+		model = UserWishlist
+		fields = ['item']
+	"""helper = FormHelper()
+	helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
+	helper.form_method = 'POST'
+	"""
 
 
 # class LoginForm(AuthenticationForm):

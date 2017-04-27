@@ -34,16 +34,17 @@
 <body>
    {% block content %}
 
+{% for result in results_list %}  
 <div class="container">    
   <div class="row">
     <div class="col-sm-4">
       <div class="panel panel bg-1" style = "background-color: #7FE7CB;">
-        <div class="panel-heading"><p style="font: 15px Montserrat, sans-serif; line-height: 1.8; color: #808080; ; letter-spacing: 2px;">Because Kayla liked "Warriors"...</p></div>
+        <div class="panel-heading"><p style="font: 15px Montserrat, sans-serif; line-height: 1.8; color: #808080; ; letter-spacing: 2px;">Because Kayla liked "{{result.sports}}"...</p></div>
         <div class="panel-body"><img src="http://i.imgur.com/akBs6.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
         <div class="panel-footer"> <a style="font: 15px Montserrat, sans-serif; line-height: 1.8; color: #808080; ; letter-spacing: 2px;" href = "http://www.ticketmaster.com/golden-state-warriors-playoffs-round-1-oakland-california-04-15-2017/event/1C005238D34D4E99?brand=warriors&extcmp=gw512183&wt.mc_id=NBATEAM_GSW_SINGLE_GAME_TIX_RD1_GM1&bba=1#efeat4211"> Ticket's to a Warriors Game</a> </div>
       </div>
     </div>
-
+ {% endfor %}
 <!--  <div class="row">
     <div class="col-sm-4">
       <div class="panel panel bg-1">

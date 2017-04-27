@@ -4,9 +4,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from home.models import Users
+from home.models import Users, UserWishlist
 from .forms import Signup
 from .forms import UserForm
+from .forms import Wishlist
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.extras.widgets import SelectDateWidget
@@ -65,10 +66,17 @@ def fblogin(request):
 	return HttpResponse(r)
 
 def results(request):
-	a_list = Users.objects.all()
-	context = {'results_list': a_list}
-	return render(request, 'results.html', context)
-
+	if request.method == 'GET': # If the form is submitted
+		search_query = request.GET.get('search_box', None)
+		a_list = Users.objects.filter(name=search_query)
+		for a in a_list:
+			print a
+		context = {'results_list': a_list}
+		print "success"
+		return render(request, 'results.html', context)
+	else:
+		print "failure"
+		render(request, 'search.html')
 	# f = open("home/results.html", "r")
 	# r = f.read()
 	# return HttpResponse(r)
@@ -118,6 +126,16 @@ def signup(request):
 		form = Signup()
 		form_user = UserForm()
 	return render(request, 'signup.html', {'form': form, 'form_user': form_user})
+
+def wishlist(request):
+	if request.method == 'POST':
+		form = Wishlist(request.POST)
+		if form.is_valid():
+			new = form.save()
+		return HttpResponseRedirect('http://localhost:8000/wishlist/')
+	else: 
+		form = Wishlist()
+	return render(request, 'wishlist.html', {'form': form})
 
 	# form = Signup(request.POST)
 	# form1 = UserForm(request.POST)
