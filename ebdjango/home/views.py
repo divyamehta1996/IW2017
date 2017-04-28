@@ -8,6 +8,7 @@ from home.models import Users, UserWishlist
 from .forms import Signup
 from .forms import UserForm
 from .forms import Wishlist
+from .forms import Checklist
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.extras.widgets import SelectDateWidget
@@ -24,6 +25,7 @@ def login_notfb(request):
 	if request.method == 'POST':
 		user = authenticate(username=request.POST['username'], password=request.POST['password'])
 		print "post request"
+		login(request, user)
 
 		if request.user.is_authenticated():
 			login(request, user)
@@ -84,6 +86,8 @@ def results(request):
 def search(request):
 	if request.method == 'GET': # If the form is submitted
 		search_query = request.GET.get('search_box', None)
+		checkbox = request.GET.get('options', None)
+		print checkbox
 		a_list = Users.objects.filter(name=search_query)
 		for a in a_list:
 			print a

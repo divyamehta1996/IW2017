@@ -31,7 +31,7 @@ class Signup(forms.ModelForm):
 class UserForm(UserCreationForm):
 	class Meta:
 		model = User
-		fields = ('username', 'email')
+		fields = ('username', 'email', 'first_name', 'last_name')
 
 class Wishlist(forms.ModelForm):
 	item = forms.CharField()
@@ -43,6 +43,10 @@ class Wishlist(forms.ModelForm):
 	helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
 	helper.form_method = 'POST'
 	"""
+
+class Checklist(forms.Form):
+	CHOICES=('Object', 'Experience')
+	choice_field = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
 
 
 # class LoginForm(AuthenticationForm):

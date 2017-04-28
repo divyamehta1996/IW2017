@@ -64,12 +64,44 @@ table, th, td {
   .bg-1 { 
       background-color: #7FE7CB; /* Green */
       color: #ffffff;
+      margin-bottom: 50;
+      font: 20px Montserrat, sans-serif;
+    letter-spacing: 2px;
   }
   .center {
     margin: auto;
     width: 50%;
     border: 3px solid green;
     padding: 10px;
+}
+
+.check {
+  height:75px;
+  width:175px;
+  font: 20px Montserrat, sans-serif;
+  letter-spacing: 2px;
+
+}
+.btn span.glyphicon {         
+  opacity: 0;       
+}
+.btn.active span.glyphicon {        
+  opacity: 1;       
+}
+
+
+#search_box {
+  width: 285px;
+  margin-bottom: 25px;
+  font: 25px Montserrat, sans-serif;
+  letter-spacing: 2px;
+  height:50px;
+}
+
+input[type="text"] {
+    color:#808080;
+    padding:3px;
+    margin:5px;
 }
   </style>
 <body>
@@ -83,6 +115,11 @@ table, th, td {
         <span class="icon-bar"></span>                        
       </button>
       <a class="navbar-brand" href="http://127.0.0.1:8000/">HOME</a>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+         <a class="navbar-brand" href="/wishlist/">MY WISHLIST</a>
+      </ul>
     </div>
 </nav>
 
@@ -92,23 +129,43 @@ table, th, td {
 <div class="container">
     <div class="row">
         <h3><font color = grey>Who would you like to find a gift for?</font></h3>
-<!--            <div id="custom-search-input">
-                            <div class="input-group col-md-12">
-                                <input type="text" class="  search-query form-control" placeholder="Search" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-info" type="button">
-                                        <span class=" glyphicon glyphicon-search"></span>
-                                    </button>
-                                </span>
-                            </div>
-                        </div> -->
+
     <form type="get" action="/results/" style="margin: 0; color=#808080">
-    <input  id="search_box" type="text" style="color=#ffffff;" name="search_box"  placeholder="Search..." >
+    <input  id="search_box" type="text" id="searchtext" style="font-color=#ffffff;" name="search_box"  placeholder="Search..." >
     <button class="btn btn-info btn-lg" id="search_submit" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-</form>
+    </form>
     </div>
 </div>
 </div>
+
+    <center>
+
+    <div class="btn-group" data-toggle="buttons">
+  <!--<form id="form" method="post" action="/search/">-->
+      <label class="btn check btn-info">
+
+       <input type="radio" name="options" id="obj" autocomplete="off">
+        <span class="glyphicon glyphicon-ok"></span>
+        <h5>Object</h5>
+      </label>
+
+      <label class="btn check btn-default">
+         <input type="radio" name="options" id="exp" autocomplete="off">
+        <span class="glyphicon glyphicon-ok"></span>
+        <h5>Experience</h5>
+      </label>
+
+    
+    </div>
+
+</center>
+
+<label for="id_beatles_0">
+    John
+    <span class="radio"><input id="id_beatles_0" name="beatles" type="radio" value="john" required /></span>
+</label>
+
+
 
 </body>
 </html>
