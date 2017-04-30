@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-
 <head>
   <title>Bootstrap Example</title>
   <meta charset="utf-8">
@@ -148,6 +147,8 @@ input {
 </style>
 </head>
 <body>
+
+
 <nav class="navbar navbar-default">
   <div class="container">
     <div class="navbar-header">
@@ -168,110 +169,30 @@ input {
 </nav>
 
 <div id="myDIV" class="header">
-  <h2 style="margin:5px">My Wishlist</h2>
-
-  <form action="/wishlist/" method="POST">
-    {% csrf_token %}
-    <input type="text" id="myInput" placeholder="Title...">
-    <span onclick="newElement()" class="addBtn">Add</span>
-  </form>
+  {% for person in wisher %}
+  <h2 style="margin:5px">{{person.name}}'s Wishlist</h2>
+  {% endfor %}
 </div>
-<!--  
-<form type="get" action="/wishlist/">
-    {% csrf_token %}
-    <input type="text" id="input" name="wish" placeholder="Add a Wishlist Item...">
-    <span <button class="addBtn" onclick="newElement()" type="submit" id="add_submit"></button></span>
-    </form>
-</div> -->
-
-<ul id="myUL">
-  <li>Black Dress</li>
-  <li>Warriors Tickets</li>
-  <li>Harry Potter movies</li>
-  <li>Gift Card to Dinky Bar</li>
-</ul>
-
-<script>
-// Create a "close" button and append it to each list item
-var myNodelist = document.getElementsByTagName("LI");
-var i;
-for (i = 0; i < myNodelist.length; i++) {
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  myNodelist[i].appendChild(span);
-}
-
-// Click on a close button to hide the current list item
-var close = document.getElementsByClassName("close");
-var i;
-for (i = 0; i < close.length; i++) {
-  close[i].onclick = function() {
-    var div = this.parentElement;
-    div.style.display = "none";
-  }
-}
-
-// Add a "checked" symbol when clicking on a list item
-var list = document.querySelector('ul');
-list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('checked');
-  }
-}, false);
-
-// Create a new list item when clicking on the "Add" button
-function newElement() {
-  var li = document.createElement("li");
-  var inputValue = document.getElementById("myInput").value;
+   {% for wish in wish_list %} 
+  
+  <li style="ursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+  list-style-type: none;
+  
+  /* make the list items unselectable */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+">{{wish.item}}</li>
+  {% endfor %}
 
 
-  $(document).ready(function() {
-    $.ajax({
-        method: 'POST',
-        url: '/wishlist/',
-        data: {
-          'csrfmiddlewaretoken': '{{ csrf_token }}',
-            'item': inputValue},
-        success: function (data) {
 
-             //this gets called when server returns an OK response
-             alert("it worked!");
-        },
-        error: function (data) {
-             alert("it didnt work");
-        }
-    });
-});
-
-  var t = document.createTextNode(inputValue);
-  li.appendChild(t);
-  if (inputValue === '') {
-    alert("You must write something!");
-  } else {
-    document.getElementById("myUL").appendChild(li);
-  }
-  document.getElementById("myInput").value = "";
-
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  li.appendChild(span);
-
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
-      var div = this.parentElement;
-      div.style.display = "none";
-    }
-  }
-
-
-}
-
-
-</script>
 
 </body>
 </html>

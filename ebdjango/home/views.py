@@ -16,9 +16,7 @@ from django.forms.extras.widgets import SelectDateWidget
 #from django.contrib.auth.decorators import login_required
 
 def index(request):
-	f =  open("home/index2.html", "r")
-	r = f.read()
-	return HttpResponse(r)
+	return render(request, 'index2.html')
 
    # return HttpResponse('My first view.')
 def login_notfb(request):
@@ -49,9 +47,9 @@ def login_notfb(request):
 	# else:
 	# 	print "error"
 	# 	return render(request, 'login_notfb.html')
-def logout(request):
+def logoutuser(request):
 	logout(request)
-	return render('index2.html')
+	return render(request, 'index2.html')
 
 def privacypolicy(request):
 	html = privacyhtml()
@@ -70,12 +68,21 @@ def fblogin(request):
 def results(request):
 	if request.method == 'GET': # If the form is submitted
 		search_query = request.GET.get('search_box', None)
+		pref = request.GET.get('options')
 		a_list = Users.objects.filter(name=search_query)
+		print pref
 		for a in a_list:
 			print a
-		context = {'results_list': a_list}
-		print "success"
-		return render(request, 'results.html', context)
+		if pref == 'obj':
+			preference = 'object'
+			context = {'results_list': a_list, 'pref': preference}
+			print "success"
+			return render(request, 'results.html', context)
+		if pref == 'exp':
+			preference = 'experience'
+			context = {'results_list': a_list, 'pref': preference}
+			print "success"
+			return render(request, 'results.html', context)
 	else:
 		print "failure"
 		render(request, 'search.html')
@@ -86,14 +93,19 @@ def results(request):
 def search(request):
 	if request.method == 'GET': # If the form is submitted
 		search_query = request.GET.get('search_box', None)
-		checkbox = request.GET.get('options', None)
-		print checkbox
+		pref = request.GET.get('options')
+
 		a_list = Users.objects.filter(name=search_query)
-		for a in a_list:
-			print a
-		context = {'results_list': a_list}
+		#for a in a_list:
+			#print a
+		context = {'results_list': a_list, 'pref': pref}
 		print "success"
 		return render(request, 'search.html', context)
+	
+
+
+
+
 	else:
 		print "failure"
 		render(request, 'search.html')
@@ -134,12 +146,37 @@ def signup(request):
 def wishlist(request):
 	if request.method == 'POST':
 		form = Wishlist(request.POST)
+		item = request.POST['item']
+		print item
 		if form.is_valid():
-			new = form.save()
+			new = form.save(commit=False)
+			new.user = request.user
+			new.save()
+
+			print "valid"
 		return HttpResponseRedirect('http://localhost:8000/wishlist/')
 	else: 
+		print "invalid"
 		form = Wishlist()
 	return render(request, 'wishlist.html', {'form': form})
+
+def wishlistList(request, username=None):
+	print username
+	if username is not None:
+		# get the name of the user 
+		wisher = Users.objects.filter(username=username)
+		# get their wishes
+		if UserWishlist.objects.filter(username=username):
+			print "wishes"
+			a_list = UserWishlist.objects.filter(username=username)
+			context = {'wish_list': a_list, 'wisher': wisher}
+			return render(request, 'wishlistList.html', context)
+	return render(request, 'wishlistList.html')
+
+
+
+
+
 
 	# form = Signup(request.POST)
 	# form1 = UserForm(request.POST)

@@ -14,7 +14,11 @@ urlpatterns = [
     url(r'^specifics/', views.specifics, name='specifics'),
     url(r'^signup/', views.signup, name='signup'),
     url(r'^login/', views.login_notfb, name='login_notfb'),
-    url(r'^wishlist/', views.wishlist, name='wishlist')
+    url(r'^wishlist/', views.wishlist, name='wishlist'),
+    url(r'^logout/', views.logoutuser, name='logoutuser'),
+    url(r'^wishList/(?P<username>\w+$)', views.wishlistList, name='wishlistList'),
+
+
     #url(r'^login/', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm}),
     #url(r'^logout/$', views.logout, {'next_page': '/login'}) 
 

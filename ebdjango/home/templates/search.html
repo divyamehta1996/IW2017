@@ -89,7 +89,6 @@ table, th, td {
   opacity: 1;       
 }
 
-
 #search_box {
   width: 285px;
   margin-bottom: 25px;
@@ -119,6 +118,7 @@ input[type="text"] {
           <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
          <a class="navbar-brand" href="/wishlist/">MY WISHLIST</a>
+         <a class="navbar-brand" href="/logout">LOGOUT</a>
       </ul>
     </div>
 </nav>
@@ -131,19 +131,35 @@ input[type="text"] {
         <h3><font color = grey>Who would you like to find a gift for?</font></h3>
 
     <form type="get" action="/results/" style="margin: 0; color=#808080">
+  <div class="row">
     <input  id="search_box" type="text" id="searchtext" style="font-color=#ffffff;" name="search_box"  placeholder="Search..." >
     <button class="btn btn-info btn-lg" id="search_submit" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+  </row>
+  <div class="row">
+     <label class="btn check btn-info">
+       <input type="radio" name="options" id="obj" value="obj" autocomplete="off">
+        <span class="glyphicon glyphicon-ok"></span>
+        <h5>Object</h5>
+      </label>
+
+      <label class="btn check btn-default">
+         <input type="radio" name="options" id="exp" value="exp" autocomplete="off">
+        <span class="glyphicon glyphicon-ok"></span>
+        <h5>Experience</h5>
+      </label>
+</row>
     </form>
     </div>
 </div>
 </div>
 
-    <center>
 
-    <div class="btn-group" data-toggle="buttons">
-  <!--<form id="form" method="post" action="/search/">-->
+<!--     <center>
+
+
+
+  <form id="form" method="post" action="/search/">
       <label class="btn check btn-info">
-
        <input type="radio" name="options" id="obj" autocomplete="off">
         <span class="glyphicon glyphicon-ok"></span>
         <h5>Object</h5>
@@ -158,12 +174,8 @@ input[type="text"] {
     
     </div>
 
-</center>
+</center> -->
 
-<label for="id_beatles_0">
-    John
-    <span class="radio"><input id="id_beatles_0" name="beatles" type="radio" value="john" required /></span>
-</label>
 
 
 
