@@ -150,9 +150,11 @@ def wishlist(request):
 		print item
 		if form.is_valid():
 			new = form.save(commit=False)
-			new.user = request.user
+			print "hi"
+			new.username = request.user
+			print "hi2"
+			print request.user
 			new.save()
-
 			print "valid"
 		return HttpResponseRedirect('http://localhost:8000/wishlist/')
 	else: 
@@ -173,7 +175,8 @@ def wishlistList(request, username=None):
 			return render(request, 'wishlistList.html', context)
 	return render(request, 'wishlistList.html')
 
-
+def faq(request):
+	return render(request, 'faq.html')
 
 
 
